@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate PWA Icons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .icon-preview {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            background: white;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        .instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="instructions">
+        <h2>Generador de Iconos PWA - AcademiaOS</h2>
+        <p>Este script genera iconos para la PWA de AcademiaOS en diferentes tamaños.</p>
+        <p><strong>Instrucciones:</strong></p>
+        <ol>
+            <li>Haz clic en "Generar Iconos" para crear todos los tamaños necesarios</li>
+            <li>Descarga cada icono haciendo clic derecho y "Guardar imagen como..."</li>
+            <li>Guarda los archivos en la carpeta assets/ con los nombres indicados</li>
+        </ol>
+        <button onclick="generateAllIcons()">Generar Iconos</button>
+    </div>
+    
+    <div id="icons-container"></div>
+    
+    <script>
+        const sizes = [
+            { size: 72, name: 'icon-72.png' },
+            { size: 96, name: 'icon-96.png' },
+            { size: 128, name: 'icon-128.png' },
+            { size: 144, name: 'icon-144.png' },
+            { size: 152, name: 'icon-152.png' },
+            { size: 192, name: 'icon-192.png' },
+            { size: 384, name: 'icon-384.png' },
+            { size: 512, name: 'icon-512.png' }
+        ];
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Draw school icon
+            ctx.fillStyle = 'white';
+            ctx.font = `${size * 0.4}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🎓', size / 2, size / 2);
+            
+            return canvas;
+        }
+        
+        function generateAllIcons() {
+            const container = document.getElementById('icons-container');
+            container.innerHTML = '';
+            
+            sizes.forEach(({ size, name }) => {
+                const canvas = generateIcon(size);
+                canvas.id = `icon-${size}`;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'icon-preview';
+                
+                const label = document.createElement('div');
+                label.textContent = `${name} (${size}x${size})`;
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = 'Descargar';
+                downloadBtn.onclick = () => downloadIcon(canvas, name);
+                
+                wrapper.appendChild(canvas);
+                wrapper.appendChild(label);
+                wrapper.appendChild(downloadBtn);
+                container.appendChild(wrapper);
+            });
+        }
+        
+        function downloadIcon(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Auto-generate on load
+        window.onload = generateAllIcons;
+    </script>
+</body>
+</html>

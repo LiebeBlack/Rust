@@ -1,0 +1,78 @@
+[package]
+name = "educore-ultra"
+version = "1.0.0"
+edition = "2021"
+authors = ["AcademiaOS Team"]
+description = "EduCore Ultra - High-performance academic management system backend"
+license = "MIT"
+repository = "https://github.com/academiaos/educore-ultra"
+
+[dependencies]
+# Web Framework
+axum = "0.7"
+axum-extra = { version = "0.9", features = ["typed-header"] }
+headers = "0.4"
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "compression-gzip", "trace"] }
+tokio = { version = "1.35", features = ["full"] }
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite", "chrono", "uuid"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Authentication & Security
+jsonwebtoken = "9.2"
+bcrypt = "0.15"
+
+# Date/Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Error Handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Async Utilities
+futures = "0.3"
+
+# Image Processing
+image = "0.24"
+
+# Hashing
+sha2 = "0.10"
+md5 = "0.7"
+
+# QR Code Generation
+qrcode = "0.14"
+
+# UUID
+uuid = { version = "1.6", features = ["v4", "serde"] }
+
+# System Information
+gethostname = "0.4"
+
+# Environment Variables
+dotenv = "0.15"
+
+# HTTP Client (for cluster communication)
+reqwest = { version = "0.11", features = ["json"] }
+
+
+[dev-dependencies]
+# Testing
+tokio-test = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+[profile.dev]
+opt-level = 0
